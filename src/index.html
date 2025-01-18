@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huskalkylator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="main-container">
+        <!-- Outer Container -->
+        <div class="outer-container">
+            <div class="outer-header">
+                🏠 Fastighet och förutsättning
+                <button class="toggle-outer">Visa/dölj</button>
+            </div>
+            <div class="outer-content">
+                <div class="form-results-container">
+                    <!-- Form Section -->
+                    <div class="form-container">
+                        <div class="form-header">
+                            Värden
+                            <button class="toggle-form">Visa/dölj</button>
+                        </div>
+                        <form id="houseCalculator" class="form-content">
+                            <label for="antalPersoner">Antal personer:</label>
+                            <input type="number" id="antalPersoner" value="2" min="1" required>
+
+                            <label for="fastighetsPris">Pris på fastighet (kr):</label>
+                            <input type="number" id="fastighetsPris" value="5000000" required>
+
+                            <label for="taxeringsVarde">Taxeringsvärde (kr):</label>
+                            <input type="number" id="taxeringsVarde" value="2790000" required>
+
+                            <label for="belaningsgrad">Belåningsgrad (%):</label>
+                            <input type="number" id="belaningsgrad" value="85" step="0.01" required>
+
+                            <label for="ranta">Ränta (%):</label>
+                            <input type="number" id="ranta" value="5" step="0.01" required>
+
+                            <label for="rantAvdrag">Ränteavdrag:</label>
+                            <select id="rantAvdrag">
+                                <option value="Nej" selected>Nej</option>
+                                <option value="Ja">Ja</option>
+                            </select>
+
+                            <label for="pantbrev">Redan uttagna pantbrev (kr):</label>
+                            <input type="number" id="pantbrev" value="2757000" required>
+
+                            <button type="button" id="calculateButton">Beräkna</button>
+                        </form>
+                    </div>
+                    <!-- Results Section -->
+                    <div class="results">
+                        <h2>Resultat</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Typ</th>
+                                    <th>Totalt</th>
+                                    <th>Per person</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsTable">
+                                <!-- Dynamic results will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

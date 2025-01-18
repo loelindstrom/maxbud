@@ -1,0 +1,144 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+.main-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.outer-container {
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.outer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: #007BFF;
+    color: white;
+    border-radius: 5px 5px 0 0;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.outer-content {
+    padding: 20px;
+    display: block;
+}
+
+/* Responsive Layout for Form and Results */
+.form-results-container {
+    display: flex;
+    flex-direction: column; /* Default stacking for mobile */
+    gap: 20px;
+}
+
+@media (min-width: 768px) {
+    .form-results-container {
+        flex-direction: row; /* Side-by-side on larger screens */
+        align-items: flex-start;
+    }
+    .form-container, .results {
+        flex: 1;
+    }
+}
+
+/* Form Container */
+.form-container {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.form-header {
+    background: #f4f4f4;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.form-header button {
+    padding: 5px 15px; /* Smaller button with spacing */
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-header button:hover {
+    background: #0056b3;
+}
+
+.form-content {
+    padding: 10px;
+    display: block;
+}
+
+form label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+form input, form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button#calculateButton {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button#calculateButton:hover {
+    background: #0056b3;
+}
+
+/* Results Container */
+.results h2 {
+    margin-top: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+table th {
+    background: #007BFF;
+    color: white;
+}
+
+/* Hide content when collapsed */
+.hidden {
+    display: none;
+}

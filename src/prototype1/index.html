@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fastighet Kalkylator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Maxbud</h1>
+
+    <div class="form-section-container">
+        <div class="form-section fastighet">
+            <h2>Fastighet</h2>
+            <label for="salePrice">Säljpris:</label>
+            <input type="number" id="salePrice" placeholder="Ange säljpris" />
+
+            <label for="taxValue">Taxeringsvärde:</label>
+            <input type="number" id="taxValue" placeholder="Ange taxeringsvärde" />
+        </div>
+
+        <div class="form-section lan">
+            <h2>Lån</h2>
+            <label for="loanToValueRatio">Belåningsgrad (%):</label>
+            <input type="number" id="loanToValueRatio" placeholder="Belåningsgrad" />
+
+            <label for="interestRate">Ränta %:</label>
+            <input type="number" id="interestRate" placeholder="Ränta" />
+
+            <label for="interestDeductionCheckbox">Ränteavdrag:</label>
+            <input type="checkbox" id="interestDeductionCheckbox" />
+
+            <label for="existingMortgageDeeds">Uttagna pantbrev:</label>
+            <input type="number" id="existingMortgageDeeds" placeholder="Uttagna pantbrev" />
+        </div>
+    </div>
+
+    <div class="cost-calculation">
+        <h2>Kostnad att köpa</h2>
+        <p>Kontantinsats: <span id="downPayment">-</span> kr</p>
+        <p>Stämpelskatt pantbrev: <span id="stampDutyMortgageDeeds">-</span> kr</p>
+        <p>Stämpelskatt lagfart: <span id="stampDutyDeed">-</span> kr</p>
+        <p>Lånat kapital (bank): <span id="borrowedCapital">-</span> kr</p>
+        <p>Räntekostnad / månad (efter avdrag): <span id="monthlyInterestCost">-</span> kr</p>
+        <p>Amortering / månad: <span id="monthlyAmortization">-</span> kr</p>
+    </div>
+
+    <div class="model-display">
+        <h2>Datamodell</h2>
+        <pre id="modelOutput">{}</pre>
+    </div>
+
+    <script>
+        // Initial JSON model
+        const model = {
+            property: {
+                salePrice: null,
+                taxValue: null
+            },
+            loan: {
+                loanToValueRatio: null,
+                interestRate: null,
+                interestDeduction: null,
+                existingMortgageDeeds: null
+            },
+            propertyBuyingCosts: {
+                downPayment: null,
+                stampDutyMortgageDeeds: null,
+                stampDutyDeed: null,
+                borrowedCapital: null,
+                monthlyInterestCost: null,
+                monthlyAmortization: null
+            }
+        };
+
+        // ### DOM elements
+        // # Property
+        const salePriceInput = document.getElementById("salePrice");
+        const taxValueInput = document.getElementById("taxValue");
+        // # Loan
+        const loanToValueRatio = document.getElementById("loanToValueRatio");
+        const interestRate = document.getElementById("interestRate");
+        const interestDeductionCheckbox = document.getElementById("interestDeductionCheckbox");
+        const existingMortgageDeeds = document.getElementById("existingMortgageDeeds");
+        // # Outputs
+        const modelOutput = document.getElementById("modelOutput");
+        const downPaymentOutput = document.getElementById("downPayment");
+        const stampDutyMortgageDeedsOutput = document.getElementById("stampDutyMortgageDeeds");
+        const stampDutyDeedOutput = document.getElementById("stampDutyDeed");
+        const borrowedCapitalOutput = document.getElementById("borrowedCapital");
+        const monthlyInterestCostOutput = document.getElementById("monthlyInterestCost");
+        const monthlyAmortizationOutput = document.getElementById("monthlyAmortization");
+
+        // Function to update the JSON model
+        function updateModel() {
+            model.property.salePrice = parseFloat(salePriceInput.value) || null;
+            model.property.taxValue = parseFloat(taxValueInput.value) || null;
+            model.loan.loanToValueRatio = parseFloat(loanToValueRatio.value) || null;
+            model.loan.interestRate = parseFloat(interestRate.value) || null;
+            model.loan.interestDeduction = interestDeductionCheckbox.checked;
+            model.loan.existingMortgageDeeds = parseFloat(existingMortgageDeeds.value) || null;
+
+            // Update model display
+            modelOutput.textContent = JSON.stringify(model, null, 2);
+
+            // Perform calculations
+            calculateCosts();
+        }
+
+        // Function to calculate property buying costs
+        function calculateCosts() {
+            const salePrice = model.property.salePrice;
+            const taxValue = model.property.taxValue;
+            const loanToValueRatio = model.loan.loanToValueRatio;
+            const interestRate = model.loan.interestRate;
+            const interestDeduction = model.loan.interestDeduction;
+            const existingMortgageDeeds = model.loan.existingMortgageDeeds;
+
+            if (!salePrice || !taxValue || !loanToValueRatio || !interestRate || existingMortgageDeeds === null) {
+                // Skip calculation if any required value is missing
+                return;
+            }
+
+            const loanRatioDecimal = loanToValueRatio / 100;
+            const borrowedCapital = loanRatioDecimal * salePrice;
+            const downPayment = salePrice - borrowedCapital;
+            const stampDutyMortgageDeeds = (borrowedCapital - existingMortgageDeeds) * 0.02 + 375;
+            const stampDutyDeed = Math.max(salePrice, taxValue) * 0.015 + 850;
+            const isInterestDeductionChecked = interestDeductionCheckbox.checked;
+            const monthlyInterestCost = (isInterestDeductionChecked ? (borrowedCapital * interestRate * 0.007) : (borrowedCapital * interestRate * 0.01)) / 12;
+            const monthlyAmortization = (borrowedCapital * 0.02) / 12;
+
+            // Update model
+            model.propertyBuyingCosts.downPayment = downPayment;
+            model.propertyBuyingCosts.stampDutyMortgageDeeds = stampDutyMortgageDeeds;
+            model.propertyBuyingCosts.stampDutyDeed = stampDutyDeed;
+            model.propertyBuyingCosts.borrowedCapital = borrowedCapital;
+            model.propertyBuyingCosts.monthlyInterestCost = monthlyInterestCost;
+            model.propertyBuyingCosts.monthlyAmortization = monthlyAmortization;
+
+            // Update display
+            downPaymentOutput.textContent = downPayment.toFixed(2);
+            stampDutyMortgageDeedsOutput.textContent = stampDutyMortgageDeeds.toFixed(2);
+            stampDutyDeedOutput.textContent = stampDutyDeed.toFixed(2);
+            borrowedCapitalOutput.textContent = borrowedCapital.toFixed(2);
+            monthlyInterestCostOutput.textContent = monthlyInterestCost.toFixed(2);
+            monthlyAmortizationOutput.textContent = monthlyAmortization.toFixed(2);
+
+            // Update model display
+            modelOutput.textContent = JSON.stringify(model, null, 2);
+        }
+
+        // Add input event listeners for reactivity
+        salePriceInput.addEventListener("input", updateModel);
+        taxValueInput.addEventListener("input", updateModel);
+        loanToValueRatio.addEventListener("input", updateModel);
+        interestRate.addEventListener("input", updateModel);
+        interestDeductionCheckbox.addEventListener("change", updateModel);
+        existingMortgageDeeds.addEventListener("input", updateModel);
+
+        // Initial render of the model
+        updateModel();
+    </script>
+</body>
+
+</html>

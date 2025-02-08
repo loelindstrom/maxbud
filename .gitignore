@@ -1,0 +1,47 @@
+.DS_Store
+node_modules
+*.log
+explorations
+TODOs.md
+RELEASE_NOTE*.md
+packages/server-renderer/basic.js
+packages/server-renderer/build.dev.js
+packages/server-renderer/build.prod.js
+packages/server-renderer/server-plugin.js
+packages/server-renderer/client-plugin.js
+packages/template-compiler/build.js
+packages/template-compiler/browser.js
+.vscode
+dist
+dist-ghpages
+temp
+types/v3-generated.d.ts
+
+.DS_Store
+node_modules/
+.env
+.knit
+knit.lock
+
+# IDE user config
+.vscode/
+.idea/
+.vs/
+
+# Logs
+yarn-error.log
+npm-debug.log
+lerna-debug.log
+
+# Istanbul coverage
+coverage/
+
+# cypress
+cypress/screenshots
+cypress/videos
+
+# vitest
+__screenshots__/
+
+.vercel
+.now

@@ -1,0 +1,1 @@
+import{r as t,v as n,o as s,l as o}from"./index-CvEEwwTR.js";const r={class:"container d-flex justify-center align-center fill-height"},i=t({__name:"index",setup(a){return(c,e)=>(s(),n("div",r,e[0]||(e[0]=[o("h1",{class:"text-center"},"Välkommen",-1)])))}});export{i as default};
